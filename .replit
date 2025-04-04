@@ -1,0 +1,51 @@
+modules = ["bash"]
+
+[nix]
+channel = "stable-24_05"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "WiFiManager"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "run_wifi_manager"
+
+[[workflows.workflow]]
+name = "WiFiManager"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "chmod +x wifimanager.sh && bash wifimanager.sh"
+
+[[workflows.workflow]]
+name = "run_wifi_manager"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "bash ./wifimanager.sh"
+
+[deployment]
+run = ["sh", "-c", "chmod +x wifimanager.sh && bash wifimanager.sh"]
